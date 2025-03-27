@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataHarvest - Servicios de Scraping</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --error-color: #e74c3c;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .logo span {
+            color: var(--accent-color);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--accent-color);
+        }
+        
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .content-wrapper {
+            display: flex;
+            max-width: 1000px;
+            width: 100%;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .info-section {
+            flex: 1;
+            padding: 3rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+        }
+        
+        .info-section h1 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-section p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .features {
+            margin-top: 2rem;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-icon {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .login-section {
+            flex: 0.8;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .login-form h2 {
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            border-color: var(--accent-color);
+            outline: none;
+        }
+        
+        .login-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .login-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .login-options {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+        
+        .login-options a {
+            color: var(--accent-color);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+        }
+        
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        
+        .alert {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .alert-danger {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--error-color);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            font-weight: 500;
+        }
+        
+        .tab.active {
+            border-bottom: 2px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-container">
+        <header>
+            <div class="header-content">
+                <div class="logo">Data<span>Harvest</span></div>
+                <nav>
+                    <ul>
+                        <li><a href="#">Inicio</a></li>
+                        <li><a href="#">Servicios</a></li>
+                        <li><a href="#">Precios</a></li>
+                        <li><a href="#">Contacto</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <div class="content-wrapper">
+                <div class="info-section">
+                    <h1>Soluciones de Scraping Profesionales</h1>
+                    <p>Accede a datos estructurados de cualquier sitio web con nuestros servicios de scraping avanzados. Transformamos la información en línea en datos accionables para tu negocio.</p>
+                    
+                    <div class="features">
+                        <div class="feature-item">
+                            <span class="feature-icon">✓</span>
+                            <span>Extracción de datos personalizada</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">✓</span>
+                            <span>Monitoreo de precios de competidores</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">✓</span>
+                            <span>Generación de leads automatizada</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">✓</span>
+                            <span>Análisis de sentimiento en redes sociales</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="login-section">
+                    <div class="tabs">
+                        <div class="tab active" onclick="showTab('login')">Iniciar Sesión</div>
+                        <div class="tab" onclick="showTab('register')">Registrarse</div>
+                    </div>
+                    
+                    <!-- Login Form -->
+                    <div id="login-tab" class="tab-content active">
+                        <div th:if="${errorLogin}" class="alert alert-danger" th:text="${errorLogin}"></div>
+                        
+                        <form class="login-form" th:action="@{/iniciosesion}" method="post">
+                            <h2>Acceso Clientes</h2>
+                            
+                            <div class="form-group">
+                                <label for="email">Correo electrónico:</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="password">Contraseña:</label>
+                                <input type="password" id="password" name="password" required>
+                            </div>
+                            
+                            <button type="submit" class="login-btn">Iniciar Sesión</button>
+                            
+                            <div class="login-options">
+                                <p><a href="/recuperar">¿Olvidaste tu contraseña?</a></p>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Register Form -->
+                    <div id="register-tab" class="tab-content">
+                        <div th:if="${errorRegistro}" class="alert alert-danger" th:text="${errorRegistro}"></div>
+                        
+                        <form class="login-form" th:action="@{/registro}" method="post" th:object="${usuario}">
+                            <h2>Crear Cuenta</h2>
+                            
+                            <div class="form-group">
+                                <label for="nombre">Nombre completo:</label>
+                                <input type="text" id="nombre" th:field="*{nombre}" required>
+                                <div class="error-message" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="reg-email">Correo electrónico:</label>
+                                <input type="email" id="reg-email" th:field="*{email}" required>
+                                <div class="error-message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="reg-password">Contraseña:</label>
+                                <input type="password" id="reg-password" th:field="*{password}" required>
+                                <div class="error-message" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                            </div>
+                            
+                            <button type="submit" class="login-btn">Registrarse</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 DataHarvest - Servicios profesionales de web scraping</p>
+        </footer>
+    </div>
+    
+    <script>
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            if (tabName === 'login') {
+                document.getElementById('login-tab').classList.add('active');
+                document.querySelectorAll('.tab')[0].classList.add('active');
+            } else {
+                document.getElementById('register-tab').classList.add('active');
+                document.querySelectorAll('.tab')[1].classList.add('active');
+            }
+        }
+        
+        // Check if there's an error in registration form to show that tab
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.querySelector('.alert-danger') && 
+                document.querySelector('.alert-danger').textContent.includes('email ya está registrado')) {
+                showTab('register');
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+com\example\demo\Contacto$EstadoContacto.class
+com\example\demo\Usuario$TipoUsuario.class
+com\example\demo\CarritoCompra$TipoPlan.class
+com\example\demo\Usuario.class
+com\example\demo\Application.class
+com\example\demo\Servicio.class
+com\example\demo\AuthController.class
+com\example\demo\CarritoCompra.class
+com\example\demo\Contacto.class
+com\example\demo\CarritoCompra$EstadoCarrito.class
+com\example\demo\UsuarioRepository.class
