@@ -51,4 +51,103 @@ public class Servicio {
     
     @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion = LocalDateTime.now();
+
+    // Servicio.java (añadir estos métodos a tu clase existente)
+// Getters
+public Integer getId() {
+    return id;
+}
+
+public String getNombre() {
+    return nombre;
+}
+
+public BigDecimal getPrecioPorMes() {
+    return precioPorMes;
+}
+
+public BigDecimal getPrecioPorAnio() {
+    return precioPorAnio;
+}
+
+public BigDecimal getPrecioPorTrimestre() {
+    return precioPorTrimestre;
+}
+
+public String getDescripcion() {
+    return descripcion;
+}
+
+public String getCategoria() {
+    return categoria;
+}
+
+public LocalDate getFechaDisponibilidadInicio() {
+    return fechaDisponibilidadInicio;
+}
+
+public LocalDate getFechaDisponibilidadFin() {
+    return fechaDisponibilidadFin;
+}
+
+public Boolean getActivo() {
+    return activo;
+}
+
+public LocalDateTime getFechaCreacion() {
+    return fechaCreacion;
+}
+
+public LocalDateTime getFechaActualizacion() {
+    return fechaActualizacion;
+}
+
+// Setters
+public void setId(Integer id) {
+    this.id = id;
+}
+
+public void setNombre(String nombre) {
+    this.nombre = nombre;
+}
+
+public void setPrecioPorMes(BigDecimal precioPorMes) {
+    this.precioPorMes = precioPorMes;
+}
+
+public void setPrecioPorAnio(BigDecimal precioPorAnio) {
+    this.precioPorAnio = precioPorAnio;
+}
+
+public void setPrecioPorTrimestre(BigDecimal precioPorTrimestre) {
+    this.precioPorTrimestre = precioPorTrimestre;
+}
+
+public void setDescripcion(String descripcion) {
+    this.descripcion = descripcion;
+}
+
+public void setCategoria(String categoria) {
+    this.categoria = categoria;
+}
+
+public void setFechaDisponibilidadInicio(LocalDate fechaDisponibilidadInicio) {
+    this.fechaDisponibilidadInicio = fechaDisponibilidadInicio;
+}
+
+public void setFechaDisponibilidadFin(LocalDate fechaDisponibilidadFin) {
+    this.fechaDisponibilidadFin = fechaDisponibilidadFin;
+}
+
+public void setActivo(Boolean activo) {
+    this.activo = activo;
+}
+
+public void setFechaCreacion(LocalDateTime fechaCreacion) {
+    this.fechaCreacion = fechaCreacion;
+}
+
+public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
+    this.fechaActualizacion = fechaActualizacion;
+}
 }
