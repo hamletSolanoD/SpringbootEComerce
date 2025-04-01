@@ -1,4 +1,3 @@
-// CarritoCompra.java
 package com.example.demo;
 
 import java.math.BigDecimal;
@@ -61,5 +60,79 @@ public class CarritoCompra {
     
     public enum TipoPlan {
         MENSUAL, TRIMESTRAL, ANUAL
+    }
+    
+    // Getters
+    public Integer getId() {
+        return id;
+    }
+    
+    public Usuario getUsuario() {
+        return usuario;
+    }
+    
+    public Servicio getServicio() {
+        return servicio;
+    }
+    
+    public EstadoCarrito getEstado() {
+        return estado;
+    }
+    
+    public TipoPlan getTipoPlan() {
+        return tipoPlan;
+    }
+    
+    public LocalDateTime getFechaAgregado() {
+        return fechaAgregado;
+    }
+    
+    public LocalDateTime getFechaCompra() {
+        return fechaCompra;
+    }
+    
+    public LocalDateTime getFechaExpiracion() {
+        return fechaExpiracion;
+    }
+    
+    public BigDecimal getPrecioCompra() {
+        return precioCompra;
+    }
+    
+    // Setters
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
+    public void setServicio(Servicio servicio) {
+        this.servicio = servicio;
+    }
+    
+    public void setEstado(EstadoCarrito estado) {
+        this.estado = estado;
+    }
+    
+    public void setTipoPlan(TipoPlan tipoPlan) {
+        this.tipoPlan = tipoPlan;
+    }
+    
+    public void setFechaAgregado(LocalDateTime fechaAgregado) {
+        this.fechaAgregado = fechaAgregado;
+    }
+    
+    public void setFechaCompra(LocalDateTime fechaCompra) {
+        this.fechaCompra = fechaCompra;
+    }
+    
+    public void setFechaExpiracion(LocalDateTime fechaExpiracion) {
+        this.fechaExpiracion = fechaExpiracion;
+    }
+    
+    public void setPrecioCompra(BigDecimal precioCompra) {
+        this.precioCompra = precioCompra;
     }
 }

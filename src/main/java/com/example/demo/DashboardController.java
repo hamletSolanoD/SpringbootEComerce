@@ -20,6 +20,73 @@ public class DashboardController {
     @Autowired
     private ServicioRepository servicioRepository;
 
+
+    @Autowired
+private CarritoCompraRepository carritoCompraRepository;
+
+@Autowired
+private UsuarioRepository usuarioRepository;
+
+@PostMapping("/agregar-carrito")
+public String agregarAlCarrito(
+        @RequestParam Integer servicioId,
+        @RequestParam String tipoPlan,
+        HttpSession session,
+        RedirectAttributes redirectAttributes) {
+    
+    if (!isAuthenticated(session)) {
+        return "redirect:/";
+    }
+    
+    Integer usuarioId = (Integer) session.getAttribute("usuarioId");
+    
+    try {
+        // Verificar si ya existe en el carrito
+        var carritoExistente = carritoCompraRepository
+                .findByUsuarioIdAndServicioIdAndEstado(
+                    usuarioId, servicioId, CarritoCompra.EstadoCarrito.EN_PROCESO);
+        
+        // Obtener usuario y servicio
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        
+        Servicio servicio = servicioRepository.findById(servicioId)
+                .orElseThrow(() -> new RuntimeException("Servicio no encontrado"));
+        
+        CarritoCompra carrito;
+        CarritoCompra.TipoPlan plan = CarritoCompra.TipoPlan.valueOf(tipoPlan);
+        
+        if (carritoExistente.isPresent()) {
+            // Actualizar el plan si ya existe
+            carrito = carritoExistente.get();
+            carrito.setTipoPlan(plan);
+        } else {
+            // Crear nuevo item
+            carrito = new CarritoCompra();
+            carrito.setUsuario(usuario);
+            carrito.setServicio(servicio);
+            carrito.setTipoPlan(plan);
+        }
+        
+        // Establecer precio según el plan
+        switch (plan) {
+            case MENSUAL: carrito.setPrecioCompra(servicio.getPrecioPorMes()); break;
+            case TRIMESTRAL: carrito.setPrecioCompra(servicio.getPrecioPorTrimestre()); break;
+            case ANUAL: carrito.setPrecioCompra(servicio.getPrecioPorAnio()); break;
+        }
+        
+        carritoCompraRepository.save(carrito);
+        
+        redirectAttributes.addFlashAttribute("mensaje", 
+                "Servicio '" + servicio.getNombre() + "' agregado al carrito con plan " + tipoPlan);
+        
+        return "redirect:/carrito";
+    } catch (Exception e) {
+        redirectAttributes.addFlashAttribute("error", "Error: " + e.getMessage());
+        return "redirect:/dashboard";
+    }
+}
+
     // Verificar autenticación para todas las rutas del dashboard
     private boolean isAuthenticated(HttpSession session) {
         return session.getAttribute("usuarioId") != null;
@@ -90,25 +157,5 @@ public class DashboardController {
         model.addAttribute("servicio", servicio);
         
         return "detalle-servicio";
-    }
-    
-    @PostMapping("/agregar-carrito")
-    public String agregarAlCarrito(
-            @RequestParam Integer servicioId,
-            @RequestParam String tipoPlan,
-            HttpSession session,
-            RedirectAttributes redirectAttributes) {
-        
-        // Verificar si el usuario está autenticado
-        if (!isAuthenticated(session)) {
-            return "redirect:/";
-        }
-        
-        // Aquí iría la lógica para agregar al carrito
-        // Por ahora solo mostramos un mensaje de éxito
-        redirectAttributes.addFlashAttribute("mensaje", 
-                "Servicio agregado al carrito con plan " + tipoPlan);
-        
-        return "redirect:/dashboard";
     }
 }
