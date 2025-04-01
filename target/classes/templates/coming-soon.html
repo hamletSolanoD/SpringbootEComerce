@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebScrapping - Próximamente</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .coming-soon-container {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+        
+        .coming-soon-icon {
+            font-size: 80px;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+        }
+        
+        .coming-soon-title {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .coming-soon-description {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+        
+        .countdown-item {
+            margin: 0 15px;
+            text-align: center;
+        }
+        
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            background-color: rgba(52, 152, 219, 0.1);
+            border-radius: 8px;
+            padding: 10px 20px;
+            min-width: 80px;
+            display: inline-block;
+        }
+        
+        .countdown-label {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 10px;
+        }
+        
+        .features-coming {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .feature-item {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            width: 200px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 30px;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .feature-description {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .back-button {
+            margin-top: 30px;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Incluir el sidebar con el ítem activo correspondiente -->
+        <div th:replace="~{fragments :: sidebar(${activeMenu})}"></div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1 class="page-title" th:text="${sectionTitle}">Próximamente</h1>
+            </div>
+            
+            <div class="coming-soon-container">
+                <div class="coming-soon-icon" th:text="${sectionIcon}">🚀</div>
+                <h2 class="coming-soon-title" th:text="${sectionTitle + ' - Próximamente'}">Próximamente</h2>
+                <p class="coming-soon-description" th:text="${sectionDescription}">
+                    Estamos trabajando arduamente para traerte esta nueva funcionalidad. 
+                    Pronto podrás disfrutar de todas sus características.
+                </p>
+                
+                <div class="countdown">
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="days">00</div>
+                        <div class="countdown-label">Días</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="hours">00</div>
+                        <div class="countdown-label">Horas</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="minutes">00</div>
+                        <div class="countdown-label">Minutos</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="seconds">00</div>
+                        <div class="countdown-label">Segundos</div>
+                    </div>
+                </div>
+                
+                <div class="features-coming">
+                    <div class="feature-item">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-title">Análisis Avanzado</div>
+                        <div class="feature-description">Visualiza datos complejos de manera sencilla</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🔍</div>
+                        <div class="feature-title">Búsqueda Inteligente</div>
+                        <div class="feature-description">Encuentra lo que necesitas al instante</div>
+                    </div>
+                </div>
+                
+                <div class="back-button">
+                    <a href="/dashboard" class="btn btn-primary">Volver al Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script th:src="@{/js/script.js}"></script>
+    <script>
+        // Countdown Timer
+        function updateCountdown() {
+            // Set the launch date (30 days from now)
+            const now = new Date();
+            const launchDate = new Date();
+            launchDate.setDate(now.getDate() + 30);
+            
+            const diff = launchDate - now;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        // Update the countdown every second
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>

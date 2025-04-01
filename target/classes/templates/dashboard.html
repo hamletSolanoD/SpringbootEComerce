@@ -359,24 +359,18 @@
             text-align: right;
         }
     </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
     <div class="dashboard-container">
         <!-- Sidebar -->
        <!-- Incluir el sidebar con el ítem activo correspondiente -->
-<!-- Incluir el sidebar con el ítem activo correspondiente -->
 <div th:replace="~{fragments :: sidebar('servicios')}"></div>
+
         <!-- Main Content -->
         <div class="main-content">
-            <div class="header">
-                <h1 class="page-title">Servicios de Scraping</h1>
-                <div class="user-actions">
-                    <a href="#"><i>🔔</i></a>
-                    <a href="#"><i>🛒</i></a>
-                    <a href="#"><i>👤</i></a>
-                </div>
-            </div>
+
 
             <!-- Alert Message -->
             <div class="alert alert-success" th:if="${mensaje}" th:text="${mensaje}"></div>

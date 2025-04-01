@@ -254,6 +254,7 @@
             background-color: #2980b9;
         }
     </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
     <div class="dashboard-container">
@@ -263,13 +264,7 @@
         
         <!-- Main Content -->
         <div class="main-content">
-            <div class="header">
-                <h1 class="page-title">Mis Suscripciones</h1>
-                <div class="user-actions">
-                    <a href="#"><i>🔔</i></a>
-                    <a href="#"><i>👤</i></a>
-                </div>
-            </div>
+   
             
             <!-- Alert Messages -->
             <div class="alert alert-success" th:if="${mensaje}" th:text="${mensaje}"></div>

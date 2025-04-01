@@ -246,12 +246,13 @@
             color: #888;
         }
     </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
     <div class="dashboard-container">
         <!-- Sidebar -->
         <!-- Incluir el sidebar con el ítem activo correspondiente -->
-<div th:replace="~{fragments :: sidebar('servicios')}"></div>
+<div th:replace="~{fragments :: sidebar('carrito')}"></div>
         
         <!-- Main Content -->
         <div class="main-content">

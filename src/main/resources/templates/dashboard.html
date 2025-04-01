@@ -359,6 +359,7 @@
             text-align: right;
         }
     </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
@@ -369,14 +370,7 @@
 
         <!-- Main Content -->
         <div class="main-content">
-            <div class="header">
-                <h1 class="page-title">Servicios de Scraping</h1>
-                <div class="user-actions">
-                    <a href="#"><i>🔔</i></a>
-                    <a href="#"><i>🛒</i></a>
-                    <a href="#"><i>👤</i></a>
-                </div>
-            </div>
+
 
             <!-- Alert Message -->
             <div class="alert alert-success" th:if="${mensaje}" th:text="${mensaje}"></div>
