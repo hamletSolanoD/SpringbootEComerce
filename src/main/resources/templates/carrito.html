@@ -267,7 +267,7 @@
             <div th:if="${itemsCarrito.empty}" class="empty-cart">
                 <h2>Tu carrito está vacío</h2>
                 <p>Agrega servicios para continuar con tu compra</p>
-                <a href="/dashboard" class="btn btn-primary">Ver servicios disponibles</a>
+                <a href="dashboard" class="btn btn-primary">Ver servicios disponibles</a>
             </div>
             
             <div th:if="${!itemsCarrito.empty}">
@@ -289,7 +289,7 @@
                             <td th:text="${item.tipoPlan}"></td>
                             <td th:text="${'$' + item.precioCompra}"></td>
                             <td>
-                                <form action="/eliminar-carrito" method="post">
+                                <form action="eliminar-carrito" method="post">
                                     <input type="hidden" name="carritoId" th:value="${item.id}">
                                     <button type="submit" class="btn btn-danger">Eliminar</button>
                                 </form>
@@ -306,11 +306,11 @@
                             <span th:text="${'$' + totalCarrito}"></span>
                         </div>
                         
-                        <form action="/procesar-compra" method="post">
+                        <form action="procesar-compra" method="post">
                             <button type="submit" class="btn btn-primary">Procesar Compra</button>
                         </form>
                         
-                        <a href="/dashboard" class="btn btn-outline">Seguir Comprando</a>
+                        <a href="dashboard" class="btn btn-outline">Seguir Comprando</a>
                     </div>
                 </div>
             </div>

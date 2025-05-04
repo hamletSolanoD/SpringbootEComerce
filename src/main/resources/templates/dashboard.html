@@ -379,7 +379,7 @@
             <div class="filter-section">
                 <h2 class="filter-title">Filtrar por categoría</h2>
                 <div class="category-filters">
-                    <a href="/dashboard" class="category-filter"
+                    <a href="dashboard" class="category-filter"
                         th:classappend="${categoriaActual == null ? 'active' : ''}">
                         Todos
                     </a>
@@ -435,7 +435,7 @@
                         <span class="modal-close" onclick="closeModal()">&times;</span>
                     </div>
                     <div class="modal-body">
-                        <form id="contratarForm" action="/agregar-carrito" method="post">
+                        <form id="contratarForm" action="agregar-carrito" method="post">
                             <input type="hidden" id="servicioId" name="servicioId" value="">
 
                             <div class="form-group">
@@ -465,7 +465,7 @@
                             const servicioId = this.getAttribute('data-id');
                             // Aquí puedes implementar la lógica para mostrar los detalles en un modal
                             // O redireccionar a la página de detalles
-                            window.location.href = '/servicio/' + servicioId;
+                            window.location.href = 'servicio/' + servicioId;
                         });
                     });
 

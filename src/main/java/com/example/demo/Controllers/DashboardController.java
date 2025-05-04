@@ -21,7 +21,7 @@ import com.example.demo.Repositories.CarritoCompraRepository;
 import com.example.demo.Repositories.ServicioRepository;
 import com.example.demo.Repositories.UsuarioRepository;
 
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class DashboardController {

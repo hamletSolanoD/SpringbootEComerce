@@ -14,11 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.Models.Usuario;
-import com.example.demo.Models.Usuario.TipoUsuario;
 import com.example.demo.Repositories.UsuarioRepository;
 
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 
 @Controller
@@ -28,7 +27,7 @@ public class AuthController {
     private UsuarioRepository usuarioRepository;
     
     // Encoder para contraseñas directamente en el controlador
-    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     
     @GetMapping("/")
     public String index(Model model) {
@@ -96,7 +95,7 @@ public class AuthController {
             session.setAttribute("usuarioTipo", usuario.getTipo().toString());
             
             return "redirect:/dashboard";
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("errorLogin", e.getMessage());
             return "redirect:/";
         }
