@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <!-- Sidebar Fragment -->
+    <div th:fragment="sidebar(activeMenu)" class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">Web<span>Scrapping</span></div>
+            <div class="user-info">
+                <p>Bienvenido,</p>
+                <p th:text="${session.usuarioNombre}">Usuario</p>
+            </div>
+        </div>
+        
+        <div class="sidebar-menu">
+            <a th:href="@{/dashboard}" class="menu-item" th:classappend="${activeMenu == 'servicios' ? 'active' : ''}">
+                <i>📊</i> Servicios
+            </a>
+            <a th:href="@{/carrito}" class="menu-item" th:classappend="${activeMenu == 'carrito' ? 'active' : ''}">
+                <i>🛒</i> Mi Carrito
+            </a>
+            <a th:href="@{/mis-suscripciones}" class="menu-item" th:classappend="${activeMenu == 'suscripciones' ? 'active' : ''}">
+                <i>📋</i> Mis Suscripciones
+            </a>
+            <a th:href="@{/reportes}" class="menu-item" th:classappend="${activeMenu == 'reportes' ? 'active' : ''}">
+                <i>📈</i> Reportes
+            </a>
+            <a th:href="@{/soporte}" class="menu-item" th:classappend="${activeMenu == 'soporte' ? 'active' : ''}">
+                <i>📞</i> Soporte
+            </a>
+            <a th:href="@{/logout}" class="menu-item">
+                <i>🚪</i> Cerrar Sesión
+            </a>
+        </div>
+    </div>
+</body>
+</html>

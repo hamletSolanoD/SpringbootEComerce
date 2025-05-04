@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebScrapping - Detalle de Servicio</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .service-detail-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .service-detail-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 30px;
+        }
+        
+        .service-detail-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .service-detail-category {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+        
+        .service-detail-body {
+            padding: 30px;
+        }
+        
+        .service-detail-section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .service-description {
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        .pricing-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .pricing-card {
+            flex: 1;
+            min-width: 200px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .pricing-card.selected {
+            border-color: var(--accent-color);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        
+        .pricing-period {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+        }
+        
+        .pricing-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+        
+        .pricing-features {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .pricing-feature {
+            margin-bottom: 8px;
+            color: #666;
+        }
+        
+        .pricing-feature i {
+            color: var(--success-color);
+            margin-right: 5px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn-lg {
+            padding: 12px 24px;
+            font-size: 1.1rem;
+        }
+        
+        /* Modal styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal-container {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Incluir el sidebar con el ítem activo correspondiente -->
+        <div th:replace="~{fragments :: sidebar('servicios')}"></div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1 class="page-title">Detalle del Servicio</h1>
+            </div>
+            
+            <!-- Alert Message -->
+            <div class="alert alert-success" th:if="${mensaje}" th:text="${mensaje}"></div>
+            <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+            
+            <!-- Service Detail -->
+            <div class="service-detail-container">
+                <div class="service-detail-header">
+                    <h2 class="service-detail-title" th:text="${servicio.nombre}">Nombre del Servicio</h2>
+                    <div class="service-detail-category" th:text="${servicio.categoria}">Categoría</div>
+                </div>
+                
+                <div class="service-detail-body">
+                    <div class="service-detail-section">
+                        <h3 class="section-title">Descripción</h3>
+                        <div class="service-description" th:text="${servicio.descripcion}">
+                            Descripción detallada del servicio...
+                        </div>
+                    </div>
+                    
+                    <div class="service-detail-section">
+                        <h3 class="section-title">Planes de Suscripción</h3>
+                        <div class="pricing-options">
+                            <div class="pricing-card" data-plan="MENSUAL" th:data-id="${servicio.id}">
+                                <div class="pricing-period">Mensual</div>
+                                <div class="pricing-price" th:text="${'$' + servicio.precioPorMes}">$99.99</div>
+                                <div class="pricing-features">
+                                    <div class="pricing-feature"><i>✓</i> Acceso completo por 1 mes</div>
+                                    <div class="pricing-feature"><i>✓</i> Soporte técnico</div>
+                                    <div class="pricing-feature"><i>✓</i> Actualizaciones incluidas</div>
+                                </div>
+                            </div>
+                            
+                            <div class="pricing-card" data-plan="TRIMESTRAL" th:data-id="${servicio.id}">
+                                <div class="pricing-period">Trimestral</div>
+                                <div class="pricing-price" th:text="${'$' + servicio.precioPorTrimestre}">$279.99</div>
+                                <div class="pricing-features">
+                                    <div class="pricing-feature"><i>✓</i> Acceso completo por 3 meses</div>
+                                    <div class="pricing-feature"><i>✓</i> Soporte técnico prioritario</div>
+                                    <div class="pricing-feature"><i>✓</i> Actualizaciones incluidas</div>
+                                    <div class="pricing-feature"><i>✓</i> 5% de descuento</div>
+                                </div>
+                            </div>
+                            
+                            <div class="pricing-card" data-plan="ANUAL" th:data-id="${servicio.id}">
+                                <div class="pricing-period">Anual</div>
+                                <div class="pricing-price" th:text="${'$' + servicio.precioPorAnio}">$999.99</div>
+                                <div class="pricing-features">
+                                    <div class="pricing-feature"><i>✓</i> Acceso completo por 12 meses</div>
+                                    <div class="pricing-feature"><i>✓</i> Soporte técnico VIP</div>
+                                    <div class="pricing-feature"><i>✓</i> Actualizaciones incluidas</div>
+                                    <div class="pricing-feature"><i>✓</i> 15% de descuento</div>
+                                    <div class="pricing-feature"><i>✓</i> Consultoría personalizada</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button id="btnContratar" class="btn btn-primary btn-lg">Contratar Ahora</button>
+                        <a th:href="@{/dashboard}" class="btn btn-outline btn-lg">Volver a Servicios</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para contratar -->
+    <div id="contratarModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-title">Contratar Servicio</div>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Estás a punto de agregar este servicio a tu carrito de compras.</p>
+                <p>Plan seleccionado: <span id="planSeleccionado">Ninguno</span></p>
+                <p>Precio: <span id="precioSeleccionado">$0.00</span></p>
+                
+                <form id="formAgregarCarrito" th:action="@{/agregar-carrito}" method="post">
+                    <input type="hidden" id="servicioId" name="servicioId" th:value="${servicio.id}">
+                    <input type="hidden" id="tipoPlan" name="tipoPlan" value="">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-primary" id="btnConfirmarCompra">Agregar al Carrito</button>
+            </div>
+        </div>
+    </div>
+    
+    <script th:src="@{/js/script.js}"></script>
+    <script>
+        // Variables para almacenar el plan seleccionado
+        let planSeleccionado = null;
+        
+        // Seleccionar plan al hacer clic en una tarjeta
+        document.querySelectorAll('.pricing-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Quitar selección anterior
+                document.querySelectorAll('.pricing-card').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                
+                // Marcar como seleccionado
+                this.classList.add('selected');
+                
+                // Guardar el plan seleccionado
+                planSeleccionado = {
+                    id: this.getAttribute('data-id'),
+                    plan: this.getAttribute('data-plan'),
+                    precio: this.querySelector('.pricing-price').textContent
+                };
+            });
+        });
+        
+        // Botón para contratar
+        document.getElementById('btnContratar').addEventListener('click', function() {
+            if (!planSeleccionado) {
+                alert('Por favor, selecciona un plan de suscripción');
+                return;
+            }
+            
+            // Actualizar el modal con la información del plan
+            document.getElementById('planSeleccionado').textContent = planSeleccionado.plan;
+            document.getElementById('precioSeleccionado').textContent = planSeleccionado.precio;
+            document.getElementById('servicioId').value = planSeleccionado.id;
+            document.getElementById('tipoPlan').value = planSeleccionado.plan;
+            
+            // Mostrar el modal
+            document.getElementById('contratarModal').classList.add('active');
+        });
+        
+        // Confirmar compra
+        document.getElementById('btnConfirmarCompra').addEventListener('click', function() {
+            document.getElementById('formAgregarCarrito').submit();
+        });
+        
+        // Cerrar modal
+        function closeModal() {
+            document.getElementById('contratarModal').classList.remove('active');
+        }
+        
+        // Cerrar modal al hacer clic fuera
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('contratarModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

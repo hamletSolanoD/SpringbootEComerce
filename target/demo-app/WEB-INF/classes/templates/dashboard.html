@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebScrapping - Servicios de Scraping</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        .user-info {
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .sidebar-menu {
+            margin-top: 30px;
+        }
+
+        .menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item.active {
+            background-color: var(--accent-color);
+        }
+
+        .menu-item i {
+            margin-right: 10px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            color: var(--dark-color);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+            color: var(--dark-color);
+            text-decoration: none;
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background-color: rgba(46, 204, 113, 0.1);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+            color: var(--success-color);
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .filter-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+
+        .category-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .category-filter {
+            padding: 8px 15px;
+            background-color: var(--light-color);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-filter:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .category-filter.active {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .service-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 20px;
+        }
+
+        .service-title {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .service-category {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .service-body {
+            padding: 20px;
+        }
+
+        .service-description {
+            margin-bottom: 20px;
+            color: #555;
+            font-size: 0.95rem;
+            height: 80px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .service-pricing {
+            margin-bottom: 20px;
+        }
+
+        .price-option {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .price-label {
+            color: #555;
+        }
+
+        .price-value {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .service-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            color: var(--dark-color);
+        }
+
+        .modal-close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #aaa;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: var(--dark-color);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            text-align: right;
+        }
+    </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+       <!-- Incluir el sidebar con el ítem activo correspondiente -->
+<div th:replace="~{fragments :: sidebar('servicios')}"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+
+
+            <!-- Alert Message -->
+            <div class="alert alert-success" th:if="${mensaje}" th:text="${mensaje}"></div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <h2 class="filter-title">Filtrar por categoría</h2>
+                <div class="category-filters">
+                    <a href="/dashboard" class="category-filter"
+                        th:classappend="${categoriaActual == null ? 'active' : ''}">
+                        Todos
+                    </a>
+                    <a th:each="categoria : ${categorias}" th:href="@{'/dashboard/categoria/' + ${categoria}}"
+                        class="category-filter"
+                        th:classappend="${categoriaActual != null && categoriaActual == categoria ? 'active' : ''}">
+                        <span th:text="${categoria}">Categoría</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Services Grid -->
+            <!-- Services Grid -->
+            <div class="services-grid">
+                <div class="service-card" th:each="servicio : ${servicios}">
+                    <div class="service-header">
+                        <h3 class="service-title" th:text="${servicio.nombre}">Nombre del Servicio</h3>
+                        <div class="service-category" th:text="${servicio.categoria}">Categoría</div>
+                    </div>
+                    <div class="service-body">
+                        <div class="service-description" th:text="${servicio.descripcion}">
+                            Descripción del servicio...
+                        </div>
+                        <div class="service-pricing">
+                            <div class="price-option">
+                                <span class="price-label">Mensual:</span>
+                                <span class="price-value" th:text="${'$' + servicio.precioPorMes}">$99.99</span>
+                            </div>
+                            <div class="price-option">
+                                <span class="price-label">Trimestral:</span>
+                                <span class="price-value" th:text="${'$' + servicio.precioPorTrimestre}">$279.99</span>
+                            </div>
+                            <div class="price-option">
+                                <span class="price-label">Anual:</span>
+                                <span class="price-value" th:text="${'$' + servicio.precioPorAnio}">$999.99</span>
+                            </div>
+                        </div>
+                        <div class="service-actions">
+                            <button class="btn btn-outline ver-detalles" th:data-id="${servicio.id}"
+                                th:data-nombre="${servicio.nombre}">Ver detalles</button>
+                            <button class="btn btn-primary contratar" th:data-id="${servicio.id}"
+                                th:data-nombre="${servicio.nombre}">Contratar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal para contratar servicio -->
+            <div id="contratarModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Contratar Servicio</h2>
+                        <span class="modal-close" onclick="closeModal()">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <form id="contratarForm" action="/agregar-carrito" method="post">
+                            <input type="hidden" id="servicioId" name="servicioId" value="">
+
+                            <div class="form-group">
+                                <label for="tipoPlan">Selecciona un plan:</label>
+                                <select id="tipoPlan" name="tipoPlan" class="form-control" required>
+                                    <option value="MENSUAL">Plan Mensual</option>
+                                    <option value="TRIMESTRAL">Plan Trimestral</option>
+                                    <option value="ANUAL">Plan Anual</option>
+                                </select>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Agregar al carrito</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                // Modal functions
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Botones de "Ver detalles"
+                    document.querySelectorAll('.ver-detalles').forEach(function (button) {
+                        button.addEventListener('click', function () {
+                            const servicioId = this.getAttribute('data-id');
+                            // Aquí puedes implementar la lógica para mostrar los detalles en un modal
+                            // O redireccionar a la página de detalles
+                            window.location.href = '/servicio/' + servicioId;
+                        });
+                    });
+
+                    // Botones de "Contratar"
+                    document.querySelectorAll('.contratar').forEach(function (button) {
+                        button.addEventListener('click', function () {
+                            const servicioId = this.getAttribute('data-id');
+                            const servicioNombre = this.getAttribute('data-nombre');
+
+                            // Configurar el modal
+                            document.getElementById('servicioId').value = servicioId;
+                            document.querySelector('.modal-title').textContent = 'Contratar: ' + servicioNombre;
+                            document.getElementById('contratarModal').classList.add('active');
+                        });
+                    });
+                });
+
+                function closeModal() {
+                    document.getElementById('contratarModal').classList.remove('active');
+                }
+
+                // Close modal when clicking outside
+                window.onclick = function (event) {
+                    const modal = document.getElementById('contratarModal');
+                    if (event.target === modal) {
+                        closeModal();
+                    }
+                }
+            </script>
+</body>
+
+</html>
