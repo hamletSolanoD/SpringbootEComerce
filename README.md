@@ -338,36 +338,8 @@ Demostración de la funcionalidad principal del catálogo, mostrando cómo los u
 
 ### Diagrama de Entidades
 
-```
-┌────────────┐      ┌────────────┐      ┌────────────┐
-│  Usuario   │      │  Servicio  │      │  Contacto  │
-├────────────┤      ├────────────┤      ├────────────┤
-│ id         │      │ id         │      │ id         │
-│ nombre     │      │ nombre     │      │ nombre     │
-│ email      │      │ descripcion│      │ email      │
-│ password   │      │ categoria  │      │ mensaje    │
-│ tipo       │      │ precioMensual│    │ estado     │
-├────────────┤      │ precioTrimestral│ │ fechaCreacion│
-│            │      │ precioAnual │    └────────────┘
-└─────┬──────┘      │ activo     │            
-      │             └──────┬─────┘            
-      │                    │                  
-      │                    │                  
-      │                    │                  
-      │             ┌──────┴─────┐            
-      └─────────────► CarritoCompra │            
-                    ├────────────┤            
-                    │ id         │            
-                    │ usuarioId  │            
-                    │ servicioId │            
-                    │ tipoPlan   │            
-                    │ precio     │            
-                    │ estado     │            
-                    │ fechaCreacion│          
-                    │ fechaCompra│            
-                    │ fechaExpiracion│        
-                    └────────────┘            
-```
+![image](https://github.com/user-attachments/assets/231177c0-7ed7-455a-8b1e-ad4c33b0aca3)
+
 
 ### Estructura de Entidades
 
